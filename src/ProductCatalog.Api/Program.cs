@@ -61,6 +61,7 @@ app.MapPost("/api/products", async (
     return Results.Created($"/api/products/{product.Id}", product);
 })
 .WithName("CreateProduct");
+// Action de Suppression ajoutée par mon collaborateur
 app.MapDelete("/api/products/{id:int}", async (int id, AppDbContext db) =>
 {
     var product = await db.Products.FindAsync(id);
@@ -102,3 +103,4 @@ public class AppDbContext : DbContext
 
     public DbSet<Product> Products => Set<Product>();
 }
+// Test des pull requests !!!

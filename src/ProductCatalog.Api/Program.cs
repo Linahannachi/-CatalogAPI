@@ -61,7 +61,23 @@ app.MapPost("/api/products", async (
     return Results.Created($"/api/products/{product.Id}", product);
 })
 .WithName("CreateProduct");
+app.MapDelete("/api/products/{id:int}", async (int id, AppDbContext db) =>
+{
+    var product = await db.Products.FindAsync(id);
 
+    if (product is null)
+    {
+        return Results.NotFound(new
+        {
+            message = $"Aucun produit trouvé avec l'identifiant {id}."
+        });
+    }
+
+    db.Products.Remove(product);
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+})
+.WithName("DeleteProduct");
 app.Run();
 
 public class Product
